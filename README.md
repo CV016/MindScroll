@@ -150,25 +150,7 @@ Key parameters can be modified in the code:
 - **flash.py**: Simple pygame stimulus for testing
 - **power.py**: Basic frequency analysis tool
 
-## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-[Add your license information here]
-
-## Support
-
-For issues and questions:
-
-1. Check the troubleshooting section
-2. Review BrainBit documentation
-3. Create an issue in the repository
 
 ## Acknowledgments
 
