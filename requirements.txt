@@ -1,0 +1,10 @@
+numpy>=1.21.0
+matplotlib>=3.5.0
+scipy>=1.7.0
+scikit-learn>=1.0.0
+pylsl>=1.16.0
+neurosdk>=1.5.0
+PyWavelets>=1.1.0
+joblib>=1.1.0
+pyautogui>=0.9.50
+tkinter-tooltip>=2.2.0 

@@ -1,0 +1,218 @@
+# SSVEP BCI Configuration Settings
+# Main configuration file for the SSVEP Brain-Computer Interface system
+
+# Frequency Settings
+frequency:
+  flicker_freq_1: 8.0 # Hz - First stimulus frequency (scroll up)
+  flicker_freq_2: 13.0 # Hz - Second stimulus frequency (scroll down)
+  freq_tolerance: 0.5 # Hz - Tolerance for frequency detection
+
+# Signal Processing Parameters
+signal_processing:
+  fs: 250 # Hz - Sample rate of BrainBit
+  window_length: 2 # seconds - Analysis window length
+  buffer_size: 500 # Calculated: window_length * fs
+  overlap: 0.5 # Overlap ratio for windowing
+
+# EEG Channel Configuration
+channels:
+  names: ["O1", "O2", "T3", "T4"] # Channel names
+  count: 4 # Number of channels
+  reference: "A1" # Reference electrode
+  occipital_channels: ["O1", "O2"] # Primary SSVEP channels
+
+# Filtering Parameters
+filtering:
+  # Bandpass filter settings
+  bandpass_low: 1 # Hz - Low cutoff for bandpass filter
+  bandpass_high: 50 # Hz - High cutoff for bandpass filter
+
+  # Notch filter settings
+  notch_freq_50: 50 # Hz - European power line frequency
+  notch_freq_60: 60 # Hz - US power line frequency
+  notch_quality: 30 # Q factor for notch filter
+
+  # Filter parameters
+  filter_order: 4 # Filter order
+  enable_notch: true # Enable power line noise filtering
+
+# Hardware Settings - BrainBit
+hardware:
+  brainbit:
+    device_name: "BrainBit"
+    timeout: 30 # seconds - Connection timeout
+    auto_reconnect: true # Auto-reconnect on disconnection
+
+  # LSL Stream Settings
+  lsl:
+    stream_name: "BrainBit_EEG"
+    stream_type: "EEG"
+    nominal_srate: 250 # Hz
+    channel_format: "float32"
+    stream_info_timeout: 5 # seconds
+
+# Machine Learning Configuration
+ml:
+  # SVM Classifier settings
+  svm:
+    kernel: "rbf" # Kernel type: 'linear', 'poly', 'rbf', 'sigmoid'
+    C: 1.0 # Regularization parameter
+    gamma: "scale" # Kernel coefficient
+
+  # Training parameters
+  training:
+    min_samples_per_class: 10 # Minimum samples needed per class
+    cross_validation_folds: 5 # Number of CV folds
+    test_split: 0.2 # Test set proportion
+    validation_split: 0.2 # Validation set proportion
+
+  # Feature extraction
+  features:
+    use_power_spectrum: true # Include power spectrum features
+    use_peak_detection: true # Include peak detection features
+    use_coherence: true # Include coherence features
+    use_phase: false # Include phase features
+    frequency_bands: # Custom frequency bands for analysis
+      - [1, 4] # Delta
+      - [4, 8] # Theta
+      - [8, 12] # Alpha
+      - [12, 30] # Beta
+      - [30, 50] # Gamma
+
+# Signal Quality Assessment
+signal_quality:
+  # Impedance thresholds (kOhms)
+  impedance_good: 5 # Good impedance threshold
+  impedance_acceptable: 15 # Acceptable impedance threshold
+  impedance_poor: 50 # Poor impedance threshold
+
+  # Signal quality metrics
+  min_signal_amplitude: 1 # μV - Minimum expected signal amplitude
+  max_signal_amplitude: 100 # μV - Maximum expected signal amplitude
+  artifact_threshold: 150 # μV - Artifact detection threshold
+
+  # Quality calculation window
+  quality_window: 5 # seconds - Window for quality assessment
+
+# Detection Parameters
+detection:
+  # Frequency detection
+  peak_detection_threshold: 0.1 # Minimum peak prominence
+  snr_threshold: 3.0 # Signal-to-noise ratio threshold
+
+  # Classification thresholds
+  confidence_threshold: 0.7 # Minimum confidence for action
+  prediction_stability: 3 # Number of consistent predictions required
+
+  # Timing parameters
+  detection_window: 2 # seconds - Detection window length
+  prediction_update_rate: 5 # Hz - Prediction update frequency
+
+# GUI Configuration
+gui:
+  # Main window settings
+  window:
+    width: 800
+    height: 600
+    resizable: true
+
+  # Control panel settings
+  control_panel:
+    update_rate: 10 # Hz - GUI update frequency
+    plot_history: 5 # seconds - Plot history length
+
+  # Stimulus window settings
+  stimulus:
+    fullscreen: false # Start in fullscreen mode
+    box_width: 200 # pixels - Stimulus box width
+    box_height: 100 # pixels - Stimulus box height
+    box_margin: 50 # pixels - Margin from screen edges
+
+  # Color scheme
+  colors:
+    background: "black"
+    stimulus_on: "white"
+    stimulus_off: "black"
+    stimulus_inactive: "gray"
+    primary: "#007acc" # Primary GUI color
+    secondary: "#e0e0e0" # Secondary GUI color
+    success: "#28a745" # Success indicator color
+    warning: "#ffc107" # Warning indicator color
+    error: "#dc3545" # Error indicator color
+
+  # Font settings
+  fonts:
+    family: "Arial"
+    size_small: 8
+    size_normal: 10
+    size_large: 12
+    size_title: 16
+
+# Data Storage
+data_storage:
+  # File paths
+  data_directory: "data"
+  model_directory: "models"
+  log_directory: "logs"
+
+  # File formats
+  eeg_format: "csv" # 'csv', 'hdf5', 'mat'
+  save_raw_data: true # Save raw EEG data
+  save_processed_data: true # Save processed data
+  save_features: true # Save extracted features
+
+  # Session management
+  auto_save_interval: 60 # seconds - Auto-save interval
+  max_session_duration: 3600 # seconds - Maximum session length
+
+# Logging Configuration
+logging:
+  level: "INFO" # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_logging: true # Enable file logging
+  console_logging: true # Enable console logging
+  max_log_size: 10 # MB - Maximum log file size
+  backup_count: 5 # Number of backup log files
+
+# Application Behavior
+behavior:
+  # Startup behavior
+  auto_connect_hardware: true # Auto-connect to hardware on startup
+  load_last_model: true # Load last trained model on startup
+  show_splash_screen: false # Show splash screen
+
+  # Operation modes
+  demo_mode: false # Enable demo mode without hardware
+  debug_mode: false # Enable debug mode with extra logging
+
+  # Safety features
+  enable_safety_checks: true # Enable safety checks
+  max_scroll_rate: 10 # Maximum scroll actions per second
+
+# Performance Settings
+performance:
+  # Threading
+  use_threading: true # Use threading for data collection
+  thread_priority: "normal" # Thread priority: 'low', 'normal', 'high'
+
+  # Memory management
+  max_buffer_size: 1000 # Maximum buffer size in samples
+  garbage_collection: true # Enable automatic garbage collection
+
+  # Optimization
+  use_numpy_fft: true # Use NumPy FFT instead of SciPy
+  parallel_processing: false # Enable parallel processing (experimental)
+
+# Validation and Constraints
+constraints:
+  # Frequency constraints
+  min_frequency: 5.0 # Hz - Minimum stimulus frequency
+  max_frequency: 20.0 # Hz - Maximum stimulus frequency
+
+  # Signal constraints
+  min_sampling_rate: 100 # Hz - Minimum required sampling rate
+  max_channels: 8 # Maximum number of channels
+
+  # Training constraints
+  min_training_duration: 30 # seconds - Minimum training duration per class
+  max_training_duration: 300 # seconds - Maximum training duration per class
